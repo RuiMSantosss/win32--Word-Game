@@ -62,6 +62,18 @@ To ensure robust and extensible communication, the system employs a **Two-Step P
 1.  **Header:** The process sends a `COMMAND_TYPE` enum (integer).
 2.  **Payload:** The process sends the specific `struct` associated with that command.
 
+Lifecycle & Safety
+The system implements Graceful Shutdown procedures:
+
+Player Exit: Sending :sair triggers an EXITGAME request. The server acknowledges this, allowing the client to unblock any pending ReadFile operations and close handles cleanly.
+
+Server Shutdown: If the administrator terminates the session, an EXPELLED broadcast is sent to all clients, forcing them to detach from resources and close instantly.
+
+Academic Context
+This project was developed for the "Operating Systems II" course (2024/2025) by a group of 2 students.
+
+Final Grade: 9.2 / 10
+
 **Command Types:**
 ```c
 typedef enum {
@@ -76,15 +88,3 @@ typedef enum {
   EXPELLED    // Force disconnect
 } COMMAND_TYPE;
 
-
-Lifecycle & Safety
-The system implements Graceful Shutdown procedures:
-
-Player Exit: Sending :sair triggers an EXITGAME request. The server acknowledges this, allowing the client to unblock any pending ReadFile operations and close handles cleanly.
-
-Server Shutdown: If the administrator terminates the session, an EXPELLED broadcast is sent to all clients, forcing them to detach from resources and close instantly.
-
-Academic Context
-This project was developed for the "Operating Systems II" course (2024/2025) by a group of 2 students.
-
-Final Grade: 9.2 / 10
